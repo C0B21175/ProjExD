@@ -1,26 +1,27 @@
 import random
 t_sum = random.randint(1,26)
 k_sum = random.randint(1,t_sum-1)
+
 def moji(t,k):
-    t_lst = []
-    t_lst1 = []
-    k_lst = []
-    k_lst1 = []
+    t_1 = []
+    t_2 = []
+    k_1 = []
+    k_2 = []
     for i in range(65,91):    
-        t_lst.append(i)
-    random.sample(t_lst,k) 
-    for t in t_lst:
-       if t not in t_lst:
-          t_lst1.append(t)
-    print(t_lst)
+        t_1.append(i)
+    random.sample(t_1,k) 
+    for t in t_1:
+       if t not in t_1:
+          t_2.append(t)
+    print(t_1)
 
     for j in range(k):
-        j = random.choice(t_lst)
-        k_lst.append(j)
-    for k in k_lst:
-        if k not in k_lst:
-            k_lst1.append(k)
-    print(k_lst1)
+        j = random.choice(t_1)
+        k_1.append(j)
+    for k in k_1:
+        if k not in k_1:
+            k_2.append(k_1)
+    print(k_1)
 
 print(moji(t_sum,k_sum))       
             
