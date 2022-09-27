@@ -23,5 +23,4 @@ def moji(t,k):
             k_2.append(k_1)
     print(k_1)
 
-print(moji(t_sum,k_sum))       
-            
+print(moji(t_sum,k_sum))
