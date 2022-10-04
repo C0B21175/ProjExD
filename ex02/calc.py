@@ -5,7 +5,14 @@ def click_number(event):
     btn =event.widget
     num =btn["text"]
     #tkm.showinfo(f"{num}",f"{num}のボタンが押されました")
-    entry.insert(tk.END, num)
+    if num == "√":
+        entry.insert(tk.END, "**0.5")
+    elif num == "^2":
+        entry.insert(tk.END, "**2")
+    elif num == "^":
+        entry.insert(tk.END, "**") 
+    else:
+        entry.insert(tk.END, num)
 
 def click_equal(event):
     eqn = entry.get()
@@ -47,7 +54,7 @@ for i , num in enumerate(numbers,1):
 
 c2=3
 r2=0
-operators = ["+","-","*","/",".","**2","**0.5","**"]
+operators = ["/","*","-","+",".","^2","√","^"]
 for j , op in enumerate(operators,1):
     btn = tk.Button(root, text=f"{op}",font=("Times New Roman", 30),width=4,height=2)
     btn.bind("<1>",click_number)
