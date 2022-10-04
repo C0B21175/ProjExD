@@ -37,8 +37,6 @@ root.geometry("500x650")
 entry= tk.Entry(root,justify="right",width=10,font=("Times New Roman",40))
 entry.grid(row=0,column=0,columnspan=3)
 
-
-
 r,c = 1,0
 numbers = list(range(9,-1,-1))
 
