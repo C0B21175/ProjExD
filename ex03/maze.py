@@ -1,7 +1,7 @@
 from calendar import c
 import tkinter as tk
 import tkinter.messagebox as tkm
-import maze_maker
+import maze_maker as mm
 
 def key_down(event):
     global key
@@ -34,5 +34,7 @@ if __name__ == "__main__":
     key = ""
     root.bind("<KeyPress>",key_down)
     root.bind("<KeyRelease>",key_up)
+    
+    mm.show_maze(canv,mm.make_maze(15,9))
     main_proc()
     root.mainloop()
