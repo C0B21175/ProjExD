@@ -1,5 +1,3 @@
-from calendar import c
-from ctypes.wintypes import HPALETTE
 import tkinter as tk
 import tkinter.messagebox as tkm
 import maze_maker as mm
