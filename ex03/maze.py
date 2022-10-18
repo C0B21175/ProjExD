@@ -12,7 +12,6 @@ def key_up(event):
 
 def main_proc():
     global cx, cy, mx, my,hp
-    hp = 10
     if key =="Up":
         my -= 1
     if key =="Down":
