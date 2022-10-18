@@ -39,7 +39,7 @@ def main_proc():
     if cx == 1350 and cy == 750:#ゴール機能
         tkm.showinfo("GREAT","goalに着きました")#到着のwindow
         canv.create_image(cx,cy,image=tori1,tag="tori1")#goalのこうかとんに変更
-    elif hp == 0:#時間が足りず動かない
+    elif hp == 0:
         tkm.showinfo("BAD!!","hpが0になりました")
     else:
         root.after(100,main_proc)
