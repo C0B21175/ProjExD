@@ -1,6 +1,16 @@
 import pygame as pg
+import pygame.time as time
 import sys
 from random import randint
+import tkinter.messagebox as tkm
+
+
+key_delta = {
+    pg.K_UP:    [0, -1],
+    pg.K_DOWN:  [0, +1],
+    pg.K_LEFT:  [-1, 0],
+    pg.K_RIGHT: [+1, 0],
+}
 
 def check_bound(obj_rct, scr_rct):
     """
@@ -15,17 +25,33 @@ def check_bound(obj_rct, scr_rct):
         tate = -1
     return yoko, tate
 
+def check_bound1(obj_rct, scr_rct):
+    """
+    obj_rct：こうかとんrct，または，爆弾rct
+    scr_rct：スクリーンrct
+    領域内：+1／領域外：-1
+    """
+    yoko1, tate1 = +1, +1
+    if obj_rct.left < scr_rct.left or scr_rct.right < obj_rct.right: 
+        yoko1 = -1
+    if obj_rct.top < scr_rct.top or scr_rct.bottom < obj_rct.bottom: 
+        tate1 = -1
+    return yoko1, tate1
+
+
+
 def main():
     pg.display.set_caption("逃げろこうかとん！")
-    scrn_sfc = pg.display.set_mode((1400,700))
+    scrn_sfc = pg.display.set_mode((1600,900))
     scrn_rct = scrn_sfc.get_rect()
     bg_sfc = pg.image.load("ex04/pg_bg.jpg")
     bg_rct = bg_sfc.get_rect()
 
     tori_sfc = pg.image.load("ex04/fig/6.png")
-    tori_sfc = pg.transform.rotozoom(tori_sfc,0,2.0 )
+    tori_sfc = pg.transform.rotozoom(tori_sfc,0,2.0)
     tori_rct = tori_sfc.get_rect()
-    tori_rct.center = 900,400
+    tori_rct.center = 900,400            
+
 
     bomb_sfc = pg.Surface((20, 20)) 
     bomb_sfc.set_colorkey((0, 0, 0)) 
@@ -34,6 +60,14 @@ def main():
     bomb_rct.centerx = randint(0, scrn_rct.width)
     bomb_rct.centery = randint(0, scrn_rct.height)
     vx, vy = +1, +1
+
+    bomb_sfc1 = pg.Surface((20, 20) 
+    bomb_sfc1.set_colorkey((0, 0, 0)) 
+    pg.draw.circle(bomb_sfc1, (255, 0, 0), (10, 10), 10) 
+    bomb_rct1 = bomb_sfc1.get_rect()
+    bomb_rct1.centerx = randint(0, scrn_rct.width)
+    bomb_rct1.centery = randint(0, scrn_rct.height)
+    vx1, vy1 = +1, +1
 
     clock = pg.time.Clock()
     while True:
@@ -44,10 +78,10 @@ def main():
                 return
 
         key_states = pg.key.get_pressed()
-        if key_states[pg.K_UP]:    tori_rct.centery -= 1
-        if key_states[pg.K_DOWN]:  tori_rct.centery += 1
-        if key_states[pg.K_LEFT]:  tori_rct.centerx -= 1
-        if key_states[pg.K_RIGHT]: tori_rct.centerx += 1
+        if key_states[pg.K_UP]:    tori_rct.centery -= 3
+        if key_states[pg.K_DOWN]:  tori_rct.centery += 3
+        if key_states[pg.K_LEFT]:  tori_rct.centerx -= 3
+        if key_states[pg.K_RIGHT]: tori_rct.centerx += 3
         yoko, tate = check_bound(tori_rct, scrn_rct)
         if yoko == -1:
             if key_states[pg.K_LEFT]: 
@@ -61,17 +95,32 @@ def main():
                 tori_rct.centery -= 1   
 
         scrn_sfc.blit(tori_sfc,tori_rct)
+
         yoko, tate = check_bound(bomb_rct, scrn_rct)
+        yoko1, tate1 = check_bound(bomb_rct1, scrn_rct)
+
         vx *= yoko
         vy *= tate
+        vx1 *=yoko1
+        vy1 *= tate1
         bomb_rct.move_ip(vx, vy)
+        bomb_rct1.move_ip(vx1,vy1)
         scrn_sfc.blit(bomb_sfc, bomb_rct)
+        scrn_sfc.blit(bomb_sfc1, bomb_rct1)
 
-        if tori_rct.colliderect(bomb_rct): 
-            return
+        if tori_rct.colliderect(bomb_rct) or tori_rct.colliderect(bomb_rct1): 
+            tori_sfc1 = pg.image.load("ex04/fig/8.png")
+            tori_sfc1 = pg.transform.rotozoom(tori_sfc,0,4.0)
+            scrn_sfc.blit(tori_sfc1,tori_rct)
+            return tkm.showinfo("YUO DIE","あ～あ")
+
+        elif  time.get_ticks()> 15000:
+                         
+            return tkm.showinfo("YUO WIN","おめでとう")
 
         pg.display.update()
         clock.tick(1000)
+        
 
 
 if __name__ == "__main__":
