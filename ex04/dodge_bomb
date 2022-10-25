@@ -41,19 +41,19 @@ def check_bound1(obj_rct, scr_rct):
 
 
 def main():
-    pg.display.set_caption("逃げろこうかとん！")
+    pg.display.set_caption("逃げろこうかとん！")#フレーム
     scrn_sfc = pg.display.set_mode((1600,900))
     scrn_rct = scrn_sfc.get_rect()
     bg_sfc = pg.image.load("ex04/pg_bg.jpg")
     bg_rct = bg_sfc.get_rect()
 
-    tori_sfc = pg.image.load("ex04/fig/6.png")
+    tori_sfc = pg.image.load("ex04/fig/6.png")#こうかとん初期設定
     tori_sfc = pg.transform.rotozoom(tori_sfc,0,2.0)
     tori_rct = tori_sfc.get_rect()
     tori_rct.center = 900,400            
 
 
-    bomb_sfc = pg.Surface((20, 20)) 
+    bomb_sfc = pg.Surface((20, 20)) #爆弾一個目
     bomb_sfc.set_colorkey((0, 0, 0)) 
     pg.draw.circle(bomb_sfc, (255, 0, 0), (10, 10), 10) 
     bomb_rct = bomb_sfc.get_rect()
@@ -61,7 +61,7 @@ def main():
     bomb_rct.centery = randint(0, scrn_rct.height)
     vx, vy = +1, +1
 
-    bomb_sfc1 = pg.Surface((20, 20)) 
+    bomb_sfc1 = pg.Surface((20, 20)) #爆弾二個目
     bomb_sfc1.set_colorkey((0, 0, 0)) 
     pg.draw.circle(bomb_sfc1, (255, 0, 0), (10, 10), 10) 
     bomb_rct1 = bomb_sfc1.get_rect()
@@ -77,12 +77,13 @@ def main():
             if event.type == pg.QUIT: 
                 return
 
-        key_states = pg.key.get_pressed()
-        if key_states[pg.K_UP]:    tori_rct.centery -= 3
-        if key_states[pg.K_DOWN]:  tori_rct.centery += 3
-        if key_states[pg.K_LEFT]:  tori_rct.centerx -= 3
-        if key_states[pg.K_RIGHT]: tori_rct.centerx += 3
-        yoko, tate = check_bound(tori_rct, scrn_rct)
+        key_states = pg.key.get_pressed()#こうかとん操作
+        if key_states[pg.K_UP] and :    tori_rct.centery -= 3
+        if key_states[pg.K_DOWN] and :  tori_rct.centery += 3
+        if key_states[pg.K_LEFT] and :  tori_rct.centerx -= 3
+        if key_states[pg.K_RIGHT] and : tori_rct.centerx += 3
+
+        yoko, tate = check_bound(tori_rct, scrn_rct)#爆弾挙動
         if yoko == -1:
             if key_states[pg.K_LEFT]: 
                 tori_rct.centerx += 1
@@ -108,14 +109,15 @@ def main():
         scrn_sfc.blit(bomb_sfc, bomb_rct)
         scrn_sfc.blit(bomb_sfc1, bomb_rct1)
 
-        if tori_rct.colliderect(bomb_rct) or tori_rct.colliderect(bomb_rct1): 
-            tori_sfc1 = pg.image.load("ex04/fig/8.png")
-            tori_sfc1 = pg.transform.rotozoom(tori_sfc,0,4.0)
-            scrn_sfc.blit(tori_sfc1,tori_rct)
+        if tori_rct.colliderect(bomb_rct) or tori_rct.colliderect(bomb_rct1): #敗北処理
+            tori_sfc = pg.image.load("ex04/fig/8.png")
+            tori_sfc = pg.transform.rotozoom(tori_sfc,0,4.0)
+            tori_rct.center = tori_rct.centerx, tori_rct.centery
+            scrn_sfc.blit(tori_sfc,tori_rct)
+            pg.display.update()
             return tkm.showinfo("YUO DIE","あ～あ")
 
-        elif  time.get_ticks()> 15000:
-                         
+        elif  time.get_ticks()> 15000:#勝利処理
             return tkm.showinfo("YUO WIN","おめでとう")
 
         pg.display.update()
