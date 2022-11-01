@@ -26,10 +26,11 @@ Controls
 import random
 import os
 import tkinter.messagebox as tkm
+ 
 
 # import basic pygame modules
 import pygame as pg
-
+import pygame.key as ky
 # see if we can load more than standard BMP
 if not pg.image.get_extended():
     raise SystemExit("Sorry, extended image module required")
@@ -220,13 +221,16 @@ class Score(pg.sprite.Sprite):
         self.lastscore = -1
         self.update()
         self.rect = self.image.get_rect().move(10, 450)
-
+        
     def update(self):
+        event = pg.event.get()
         """We only update the score in update() when it has changed."""
         if SCORE != self.lastscore:
             self.lastscore = SCORE
             msg = "Score: %d" % SCORE
             self.image = self.font.render(msg, 0, self.color)
+            
+        
 
 
 def main(winstyle=0):
@@ -235,7 +239,7 @@ def main(winstyle=0):
         pg.mixer.pre_init(44100, 32, 2, 1024)
     pg.init()
     if pg.mixer and not pg.mixer.get_init():
-        print("Warning, no sound")
+        #nt("Warning, no sound")
         pg.mixer = None
 
     fullscreen = False
@@ -307,6 +311,7 @@ def main(winstyle=0):
     if pg.font:
         all.add(Score())
 
+
     # Run our main loop whilst the player is alive.
     while player.alive():
 
@@ -332,7 +337,11 @@ def main(winstyle=0):
                             SCREENRECT.size, winstyle, bestdepth
                         )
                         screen.blit(screen_backup, (0, 0))
-                    pg.display.flip()
+                elif event.key == pg.K_r: 
+                    SCORE = 0
+                elif event.key == pg.K_x:
+                    tkm.showinfo("YOU LOSE","諦めました")
+                    player.kill()
                     fullscreen = not fullscreen
 
         keystate = pg.key.get_pressed()
@@ -372,7 +381,7 @@ def main(winstyle=0):
             Explosion(player)
             SCORE = SCORE + 1
             player.kill()
-            tkm.showinfo("YUO DIE","あ～あ")
+            tkm.showinfo("YUO DIE","爆発します")
 
         # See if shots hit the aliens.
         for alien in pg.sprite.groupcollide(aliens, shots, 1, 1).keys():
@@ -390,8 +399,8 @@ def main(winstyle=0):
             player.kill()
             tkm.showinfo("YUO DIE","爆発します!")
 
-        if pg.K_DOWN == "r":
-            SCORE == 0
+        #if ky.get_pressed[ky.K_r]:
+            #SCORE == 0
 
         if SCORE >= 50:
             if pg.mixer:
